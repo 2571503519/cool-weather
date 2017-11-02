@@ -68,7 +68,7 @@ public class ChooseFragment extends Fragment {
         mBackButton = view.findViewById(R.id.back_button);
         mListView = view.findViewById(R.id.list_view);
 
-        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_2, dataList);
+        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, dataList);
         mListView.setAdapter(mAdapter);
 
         return view;
