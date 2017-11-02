@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zjl.coolweather.MainActivity;
 import com.zjl.coolweather.R;
 import com.zjl.coolweather.WeatherActivity;
 import com.zjl.coolweather.db.City;
@@ -67,7 +68,7 @@ public class ChooseFragment extends Fragment {
         mBackButton = view.findViewById(R.id.back_button);
         mListView = view.findViewById(R.id.list_view);
 
-        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, dataList);
+        mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_2, dataList);
         mListView.setAdapter(mAdapter);
 
         return view;
@@ -87,10 +88,17 @@ public class ChooseFragment extends Fragment {
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
                     String weatherId = mCountyList.get(position).getWeatherId();
-                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                    intent.putExtra("weather_id", weatherId);
-                    startActivity(intent);
-                    getActivity().finish();
+                    if (getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    } else if (getActivity() instanceof WeatherActivity) {
+                        WeatherActivity activity = (WeatherActivity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefresh.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
                 }
             }
         });
